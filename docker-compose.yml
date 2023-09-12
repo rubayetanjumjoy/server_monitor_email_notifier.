@@ -1,0 +1,7 @@
+version: '3'
+services:
+  server-monitor-app:
+    build:
+      context: .
+    ports:
+      - "8001:8001"

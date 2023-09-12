@@ -9,23 +9,26 @@ email_host = "smtp.gmail.com"  # Your SMTP server
 email_port = 587  # SMTP port (587 for TLS, 465 for SSL)
 email_sender = "acibd785@gmail.com"  # Your email address
 email_password = "kiruogcbjbwdvoqi"  # Your email password
-email_recipient = "rubayetanjumjoy@gmail.com"  # Recipient's email address
+email_recipient = ["rubayetanjumjoy@gmail.com","vladimirmakarov1616@gmail.com"]  # Recipient's email address
 def send_email(subject, message):
     msg = MIMEText(message)
     msg["Subject"] = subject
     msg["From"] = email_sender
-    msg["To"] = email_recipient
 
     try:
         server = smtplib.SMTP(email_host, email_port)
         server.starttls()
         server.login(email_sender, email_password)
-        
-        server.sendmail(email_sender, [email_recipient], msg.as_string())
+
+        for recipient in email_recipient:
+            msg["To"] = recipient  # Set "To" for each recipient
+            server.sendmail(email_sender, recipient, msg.as_string())  # Send email to each recipient
+
         server.quit()
         print("Email notification sent successfully.")
     except Exception as e:
         print(f"Failed to send email notification: {str(e)}")
+   
 @app.get("/")
 def read_root():
     return {"message": "Hello, FastAPI!"}
